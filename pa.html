@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scholarship Finder</title>
+  <style>
+    body {
+      font-family: Verdana, sans-serif;
+      background-color: #e6f2ff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+    h2 {
+      color: #004080;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #004080;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    .result h3 {
+      margin: 0;
+    }
+    .result a {
+      color: #004080;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #00264d;
+      color: white;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Scholarship Finder</h1>
+    <p>Helping students find the perfect scholarship</p>
+  </header>
+  
+  <main>
+    <h2>Search Scholarships</h2>
+    <label for="country">Country:</label>
+    <input type="text" id="country" placeholder="e.g. India, USA">
+
+    <label for="field">Field of Study:</label>
+    <input type="text" id="field" placeholder="e.g. Engineering, Arts">
+
+    <label for="level">Study Level:</label>
+    <select id="level">
+      <option value="">-- Select Level --</option>
+      <option value="Undergraduate">Undergraduate</option>
+      <option value="Postgraduate">Postgraduate</option>
+      <option value="PhD">PhD</option>
+    </select>
+
+    <button onclick="findScholarships()">Search</button>
+
+    <div id="results"></div>
+  </main>
+
+  <footer>
+    &copy; 2025 Scholarship Finder. All rights reserved.
+  </footer>
+
+  <script>
+    const scholarships = [
+      {
+        title: "Rhodes Scholarship",
+        country: "UK",
+        field: "Any",
+        level: "Postgraduate",
+        link: "https://www.rhodeshouse.ox.ac.uk/"
+      },
+      {
+        title: "Narotam Sekhsaria Scholarship",
+        country: "India",
+        field: "Engineering",
+        level: "Postgraduate",
+        link: "https://www.nsscholarship.net/"
+      },
+      {
+        title: "Australian Government Research Training Program",
+        country: "Australia",
+        field: "Any",
+        level: "PhD",
+        link: "https://www.education.gov.au/research-training-program"
+      },
+      {
+        title: "Tata Scholarship for Cornell University",
+        country: "USA",
+        field: "Science",
+        level: "Undergraduate",
+        link: "https://admissions.cornell.edu/"
+      }
+    ];
+
+    function findScholarships() {
+      const country = document.getElementById('country').value.toLowerCase();
+      const field = document.getElementById('field').value.toLowerCase();
+      const level = document.getElementById('level').value;
+
+      const matched = scholarships.filter(s =>
+        (!country || s.country.toLowerCase().includes(country)) &&
+        (!field || s.field.toLowerCase() === 'any' || s.field.toLowerCase().includes(field)) &&
+        (!level || s.level === level)
+      );
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      if (matched.length === 0) {
+        resultsDiv.innerHTML = '<p>No scholarships found.</p>';
+      } else {
+        matched.forEach(s => {
+          resultsDiv.innerHTML += `
+            <div class="result">
+              <h3>${s.title}</h3>
+              <p><strong>Country:</strong> ${s.country} | <strong>Field:</strong> ${s.field} | <strong>Level:</strong> ${s.level}</p>
+              <a href="${s.link}" target="_blank">Apply Now</a>
+            </div>
+          `;
+        });
+      }
+    }
+  </script>
+</body>
+</html>
