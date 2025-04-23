@@ -81,19 +81,36 @@
   
   <main>
     <h2>Search Scholarships</h2>
+    
+    <!-- Country Selection with Checkboxes -->
     <label for="country">Country:</label>
-    <input type="text" id="country" placeholder="e.g. India, USA">
+    <div id="country">
+      <label><input type="checkbox" id="india" value="India"> India</label>
+      <label><input type="checkbox" id="usa" value="USA"> USA</label>
+      <label><input type="checkbox" id="uk" value="UK"> UK</label>
+      <label><input type="checkbox" id="australia" value="Australia"> Australia</label>
+      <!-- Add more countries as needed -->
+    </div>
 
+    <!-- Field of Study with Checkboxes -->
     <label for="field">Field of Study:</label>
-    <input type="text" id="field" placeholder="e.g. Engineering, Arts">
+    <div id="field">
+      <label><input type="checkbox" id="engineering" value="Engineering"> Engineering</label>
+      <label><input type="checkbox" id="arts" value="Arts"> Arts</label>
+      <label><input type="checkbox" id="science" value="Science"> Science</label>
+      <label><input type="checkbox" id="medical" value="Medical"> Medical</label>
+      <label><input type="checkbox" id="law" value="Law"> Law</label>
+      <!-- Add more fields as needed -->
+    </div>
 
+    <!-- Study Level Selection with Checkboxes -->
     <label for="level">Study Level:</label>
-    <select id="level">
-      <option value="">-- Select Level --</option>
-      <option value="Undergraduate">Undergraduate</option>
-      <option value="Postgraduate">Postgraduate</option>
-      <option value="PhD">PhD</option>
-    </select>
+    <div id="level">
+      <label><input type="checkbox" id="undergraduate" value="Undergraduate"> Undergraduate</label>
+      <label><input type="checkbox" id="postgraduate" value="Postgraduate"> Postgraduate</label>
+      <label><input type="checkbox" id="phd" value="PhD"> PhD</label>
+      <!-- Add more levels as needed -->
+    </div>
 
     <button onclick="findScholarships()">Search</button>
 
@@ -137,14 +154,20 @@
     ];
 
     function findScholarships() {
-      const country = document.getElementById('country').value.toLowerCase();
-      const field = document.getElementById('field').value.toLowerCase();
-      const level = document.getElementById('level').value;
+      // Get selected countries
+      const selectedCountries = Array.from(document.querySelectorAll('#country input:checked')).map(c => c.value.toLowerCase());
 
+      // Get selected fields
+      const selectedFields = Array.from(document.querySelectorAll('#field input:checked')).map(f => f.value.toLowerCase());
+
+      // Get selected study levels
+      const selectedLevels = Array.from(document.querySelectorAll('#level input:checked')).map(l => l.value);
+
+      // Filter scholarships based on selections
       const matched = scholarships.filter(s =>
-        (!country || s.country.toLowerCase().includes(country)) &&
-        (!field || s.field.toLowerCase() === 'any' || s.field.toLowerCase().includes(field)) &&
-        (!level || s.level === level)
+        (selectedCountries.length === 0 || selectedCountries.includes(s.country.toLowerCase())) &&
+        (selectedFields.length === 0 || selectedFields.includes(s.field.toLowerCase()) || s.field.toLowerCase() === 'any') &&
+        (selectedLevels.length === 0 || selectedLevels.includes(s.level))
       );
 
       const resultsDiv = document.getElementById('results');
